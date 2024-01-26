@@ -100,8 +100,8 @@
       import sys
 
       out_path = os.getenv("out")
-      drv_path = "${drvPath}^*"  # noqa: E501
-      nix_build = ["${config.deps.nix}/bin/nix", "build", "-L", drv_path]  # noqa: E501
+      drv_path = "${drvPath}"  # noqa: E501
+      nix_build = ["${config.deps.nix}/bin/nix", "build", "-L", f"{drv_path}^*"]  # noqa: E501
       with subprocess.Popen(nix_build, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True) as process:  # noqa: E501
           for line in process.stdout:
               line = line.strip()
@@ -124,7 +124,7 @@
               exit(1)
       # At this point the derivation was built successfully and we can just read
       #   the hash from the drv file.
-      show_derivation = ["${config.deps.nix}/bin/nix", "derivation", "show", drv_path]  # noqa: E501
+      show_derivation = ["${config.deps.nix}/bin/nix", "derivation", "show", f"{drv_path}^*"]  # noqa: E501
       result = subprocess.run(show_derivation, stdout=subprocess.PIPE, text=True)
       drv = json.loads(result.stdout)
       checksum = drv[drv_path]["outputs"]["out"]["hash"]
