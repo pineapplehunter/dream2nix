@@ -100,8 +100,8 @@
       import sys
 
       out_path = os.getenv("out")
-      drv_path = "${drvPath}"  # noqa: E501
-      nix_build = ["${config.deps.nix}/bin/nix", "build", "-L", f"{drv_path}^*"]  # noqa: E501
+      drv_path = "${drvPath}^*"  # noqa: E501
+      nix_build = ["${config.deps.nix}/bin/nix", "build", "-L", drv_path]  # noqa: E501
       with subprocess.Popen(nix_build, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True) as process:  # noqa: E501
           for line in process.stdout:
               line = line.strip()
